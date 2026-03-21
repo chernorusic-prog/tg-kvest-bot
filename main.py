@@ -71,7 +71,7 @@ def start(chat):
     keyboard.add(btn_Mystical_Hotel, btn_Invasion)
     Kvestbot.send_message(chat.from_user.id, Start_Menu, reply_markup=keyboard)
 
-@Kvestbot.message_handler(commands = ["Menu"])
+@Kvestbot.message_handler(commands = ["menu"])
 def Menu(chat):
     user_id = chat.from_user.id
     users_step[user_id] = "0"
