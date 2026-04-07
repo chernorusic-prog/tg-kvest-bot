@@ -5,7 +5,7 @@ import Invasion
 import Liberator
 import Mystical_Hotel
 
-Kvestbot = telebot.TeleBot('8355491412:AAEOfsPuvGZxZpSTFP6Gy1AhUBJJvn_gK1Q')
+Kvestbot = telebot.TeleBot('8752020452:AAFefZcxitQDYn9fqaOq0_86h4uKZd4o-QA')
 
 Start_Menu = '''Добро пожаловать в сборник моих новелл.
 
