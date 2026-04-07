@@ -2,9 +2,10 @@ import telebot
 from telebot import types
 
 import Invasion
+import Liberator
 import Mystical_Hotel
 
-Kvestbot = telebot.TeleBot('8752020452:AAFefZcxitQDYn9fqaOq0_86h4uKZd4o-QA')
+Kvestbot = telebot.TeleBot('8355491412:AAEOfsPuvGZxZpSTFP6Gy1AhUBJJvn_gK1Q')
 
 Start_Menu = '''Добро пожаловать в сборник моих новелл.
 
@@ -151,6 +152,8 @@ def Cocal(chat):
         option_novella = Mystical_Hotel.Mystical_Hotel
     elif users_option_novella[user_id] == 1: #Вот сюда надо добавить новую новеллу
         option_novella = Invasion.Invasion
+    elif users_option_novella[user_id] == 25:
+        option_novella = Liberator.Liberator
     option = options(chat_data, option) # Перевод шага на выбранный вариант
     if option != None:
         users_step[user_id] = option_novella[users_step[user_id]]["options"][option]
@@ -165,7 +168,7 @@ def Cocal(chat):
     if buttons_1 == 0: # Вывод сообщения о конце новеллы
         users_step[user_id] = "0"
         keyboard.add(btn_Mystical_Hotel, btn_Invasion)
-        Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
+        Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard) #Добавить конец с проверкой от Check
     print(users_step[user_id]) # Заменить на отправку сообщений мне
 
 Kvestbot.polling(none_stop = True)
