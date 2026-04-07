@@ -22,18 +22,32 @@ End_Novella = '''🏁 История подошла к концу.
 
 Какую новеллу желаешь проходить теперь?)'''
 
+Check1 = "Ты ступаешь на запретную территорию. Уверен, что твоя мать шлюха не сдохнет от спида после такого?"
+
+Check2 = ('''Ну как скажешь, петушара ебаный, ты сам нахуй напросился.
+
+Добро пожаловать в сборник моих самых ебанутых новелл.
+
+📌 Здесь ты будешь проходить самые ахуенные интерактивные истории, отсасывая хуй и принимая в жопу на каждом шаге.
+
+С какой хуйни желаешь начать?)''')
+
 btn1 = types.InlineKeyboardButton('1', callback_data = '1')
 btn2 = types.InlineKeyboardButton('2', callback_data = '2')
 btn3 = types.InlineKeyboardButton('3', callback_data = '3')
+btn_cocal1 = types.InlineKeyboardButton('Отсосать', callback_data = 'cocal')
+btn_cocal2 = types.InlineKeyboardButton('Подрочить', callback_data = 'cocal')
 btn_Mystical_Hotel = types.InlineKeyboardButton('Мистический отель', callback_data = 'Mystical_Hotel')
 btn_Invasion = types.InlineKeyboardButton('Вторжение', callback_data = 'Invasion')
+btn_Liberator = types.InlineKeyboardButton('Асвабадитель', callback_data = 'Liberator')
 
 users_option_novella = {}
 users_step = {}
+users_check = {}
 
 keyboard = types.InlineKeyboardMarkup()
 
-def options(chat_data, option):
+def options(chat_data, option): # Выбор варианта
     if chat_data == '1':
         option = 0
     elif chat_data == '2':
@@ -42,14 +56,16 @@ def options(chat_data, option):
         option = 2
     return option
 
-def option_novellas(chat_data, option_novella):
+def option_novellas(chat_data, option_novella): # Выбранная новелла
     if chat_data == 'Mystical_Hotel':
         option_novella = 0
     elif chat_data == 'Invasion':
         option_novella = 1
+    elif chat_data == 'Liberator':
+        option_novella = 25
     return option_novella
 
-def buttons(buttons, keyboard, btn1, btn2, btn3):
+def buttons(buttons, keyboard, btn1, btn2, btn3): # Ввод клавы
     if buttons == 1:
         keyboard.keyboard.clear()
         keyboard.add(btn1)
@@ -71,6 +87,30 @@ def start(chat):
     keyboard.add(btn_Mystical_Hotel, btn_Invasion)
     Kvestbot.send_message(chat.from_user.id, Start_Menu, reply_markup=keyboard)
 
+@Kvestbot.message_handler(func = lambda chat: chat.text == "моя мать шлюха твоя мать спидозная сука")
+def sicret1(chat):
+    user_id = chat.from_user.id
+    users_check[user_id] = True
+    keyboard.keyboard.clear()
+    keyboard.add(btn_cocal1, btn_cocal2)
+    Kvestbot.send_message(chat.from_user.id, Check1, reply_markup=keyboard)
+
+@Kvestbot.message_handler(func = lambda chat: chat.text == "сто жирных армянских хуев тебе в жопу")
+def sicret2(chat):
+    user_id = chat.from_user.id
+    keyboard.keyboard.clear()
+    if user_id not in users_check: # Если чел не прошел 1 этап
+        users_check[user_id] = False
+    users_step[user_id] = "0"
+    users_option_novella[user_id] = None
+    if users_check[user_id] == True: # Проверка прошел ли 1 этап
+        keyboard.add(btn_Liberator)
+        Kvestbot.send_message(chat.from_user.id, Check2, reply_markup=keyboard)
+        users_check[user_id] = False
+    else:
+        keyboard.add(btn_cocal1, btn_cocal2)
+        Kvestbot.send_message(chat.from_user.id, "Ты ввел какую то хуйню, иди нахуй", reply_markup=keyboard)
+
 @Kvestbot.message_handler(commands = ["menu"])
 def Menu(chat):
     user_id = chat.from_user.id
@@ -90,64 +130,42 @@ def stop(chat):
     Kvestbot.send_message(chat.from_user.id, Stop_Menu, reply_markup=keyboard)
 
 
+@Kvestbot.callback_query_handler(func=lambda call: call.data == "cocal")
+def Cocal(chat):
+    Kvestbot.edit_message_reply_markup( # Удаляем кнопки у всех предыдущих сообщений
+        chat_id=chat.message.chat.id,
+        message_id=chat.message.message_id,
+        reply_markup=None
+    )
+    Kvestbot.send_message(chat.from_user.id, "АХАХАХАХАХААХ, ебать ты лошара, каким же надо быть "
+                                                         "долбаебом, чтобы кликнуть на такую хуйню?))")
+
 @Kvestbot.callback_query_handler(func=lambda call: True)
 def Cocal(chat):
-    user_id = chat.from_user.id
+    user_id = chat.from_user.id # Сбор данных и обьявление переменных
     option = None
     option_novella = None
     chat_data = chat.data
-    users_option_novella[user_id] = option_novellas(chat_data, users_option_novella[user_id])
+    users_option_novella[user_id] = option_novellas(chat_data, users_option_novella[user_id]) # Проверка выбора новеллы
     if users_option_novella[user_id] == 0:
         option_novella = Mystical_Hotel.Mystical_Hotel
-    elif users_option_novella[user_id] == 1:
+    elif users_option_novella[user_id] == 1: #Вот сюда надо добавить новую новеллу
         option_novella = Invasion.Invasion
-    option = options(chat_data, option)
+    option = options(chat_data, option) # Перевод шага на выбранный вариант
     if option != None:
         users_step[user_id] = option_novella[users_step[user_id]]["options"][option]
-    Kvestbot.edit_message_reply_markup(
+    Kvestbot.edit_message_reply_markup( # Добавляем клаву
         chat_id=chat.message.chat.id,
         message_id=chat.message.message_id,
         reply_markup=None
     )
     buttons_1 = option_novella[users_step[user_id]]["buttons"]
     buttons(buttons_1, keyboard, btn1, btn2, btn3)
-    Kvestbot.send_message(chat.from_user.id, option_novella[users_step[user_id]]["Text"], reply_markup=keyboard)
-    if buttons_1 == 0:
+    Kvestbot.send_message(chat.from_user.id, option_novella[users_step[user_id]]["Text"], reply_markup=keyboard) #Вывод сообщения
+    if buttons_1 == 0: # Вывод сообщения о конце новеллы
         users_step[user_id] = "0"
         keyboard.add(btn_Mystical_Hotel, btn_Invasion)
         Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
-    print(users_step[user_id])
-
+    print(users_step[user_id]) # Заменить на отправку сообщений мне
 
 Kvestbot.polling(none_stop = True)
-
-# @Kvestbot.message_handler(commands = ["start"])
-# def start(chat):
-#     user_id = chat.chat.id
-#     users[user_id] = 0
-#     keyboard.add(btn1, btn2, btn3)
-#     Kvestbot.send_message(chat.chat.id, f'{user_id}dfs{users}', reply_markup=keyboard)
-#
-# @Kvestbot.callback_query_handler(func=lambda call: True)
-# def Cocal(chat):
-#     user_id = chat.from_user.id
-#     var = None
-#     if chat.data == '1':
-#         var = 0
-#     if chat.data == '2':
-#         var = 1
-#     if chat.data == '3':
-#         var = 2
-#     Kvestbot.edit_message_reply_markup(
-#         chat_id=chat.message.chat.id,
-#         message_id=chat.message.message_id,
-#         reply_markup=None
-#     )
-#     if Invasion.Invasion[users[user_id]][-1] == 2:
-#         keyboard.keyboard.clear()
-#         keyboard.add(btn1, btn2)
-#     elif Invasion.Invasion[users[user_id]][-1] == 3:
-#         keyboard.keyboard.clear()
-#         keyboard.add(btn1, btn2, btn3)
-#     Kvestbot.send_message(chat.from_user.id, Invasion.Invasion[users[user_id]][var], reply_markup=keyboard)
-#     users[user_id] += 1
