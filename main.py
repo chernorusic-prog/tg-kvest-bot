@@ -5,7 +5,7 @@ import Invasion
 import Liberator
 import Mystical_Hotel
 
-Kvestbot = telebot.TeleBot('8752020452:AAFefZcxitQDYn9fqaOq0_86h4uKZd4o-QA')
+Kvestbot = telebot.TeleBot('8355491412:AAEOfsPuvGZxZpSTFP6Gy1AhUBJJvn_gK1Q')
 
 Start_Menu = '''Добро пожаловать в сборник моих новелл.
 
@@ -42,6 +42,7 @@ btn_Mystical_Hotel = types.InlineKeyboardButton('Мистический отел
 btn_Invasion = types.InlineKeyboardButton('Вторжение', callback_data = 'Invasion')
 btn_Liberator = types.InlineKeyboardButton('Асвабадитель', callback_data = 'Liberator')
 
+Admin_id = 882977571
 users_option_novella = {}
 users_step = {}
 users_check = {}
@@ -116,7 +117,8 @@ def Menu(chat):
     users_option_novella[user_id] = None
     keyboard.keyboard.clear()
     keyboard.add(btn_Mystical_Hotel, btn_Invasion)
-    Kvestbot.send_message(chat.from_user.id, chat.from_user.id, reply_markup=keyboard)
+    Kvestbot.send_message(chat.from_user.id, Start_Menu, reply_markup=keyboard)
+    Kvestbot.send_message(Admin_id, f'Пользователь {chat.from_user.first_name} {chat.from_user.last_name} ({chat.from_user.username}, {chat.from_user.language_code}) Получил сообщение: \n \n {Start_Menu}')
 
 @Kvestbot.message_handler(commands = ["stop"])
 def stop(chat):
@@ -165,9 +167,13 @@ def Cocal(chat):
     buttons(buttons_1, keyboard, btn1, btn2, btn3)
     Kvestbot.send_message(chat.from_user.id, option_novella[users_step[user_id]]["Text"], reply_markup=keyboard) #Вывод сообщения
     if buttons_1 == 0: # Вывод сообщения о конце новеллы
-        users_step[user_id] = "0"
-        keyboard.add(btn_Mystical_Hotel, btn_Invasion)
-        Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard) #Добавить конец с проверкой от Check
+        if option_novella != 25:
+            users_step[user_id] = "0"
+            keyboard.add(btn_Mystical_Hotel, btn_Invasion)
+            Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
+        else:
+            keyboard.add(btn_Mystical_Hotel, btn_Invasion)
+            Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
     print(users_step[user_id]) # Заменить на отправку сообщений мне
 
 Kvestbot.polling(none_stop = True)
