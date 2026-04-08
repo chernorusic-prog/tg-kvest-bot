@@ -5,7 +5,7 @@ import Invasion
 import Liberator
 import Mystical_Hotel
 
-Kvestbot = telebot.TeleBot('8752020452:AAFefZcxitQDYn9fqaOq0_86h4uKZd4o-QA')
+Kvestbot = telebot.TeleBot('8355491412:AAEOfsPuvGZxZpSTFP6Gy1AhUBJJvn_gK1Q')
 
 Start_Menu = '''Добро пожаловать в сборник моих новелл.
 
@@ -90,8 +90,6 @@ def start(chat):
 
 @Kvestbot.message_handler(func = lambda chat: chat.text == "моя мать шлюха твоя мать спидозная сука")
 def sicret1(chat):
-    user_id = chat.from_user.id
-    users_check[user_id] = True
     keyboard.keyboard.clear()
     keyboard.add(btn_cocal1, btn_cocal2)
     Kvestbot.send_message(chat.from_user.id, Check1, reply_markup=keyboard)
@@ -107,7 +105,6 @@ def sicret2(chat):
     if users_check[user_id] == True: # Проверка прошел ли 1 этап
         keyboard.add(btn_Liberator)
         Kvestbot.send_message(chat.from_user.id, Check2, reply_markup=keyboard)
-        users_check[user_id] = False
     else:
         keyboard.add(btn_cocal1, btn_cocal2)
         Kvestbot.send_message(chat.from_user.id, "Ты ввел какую то хуйню, иди нахуй", reply_markup=keyboard)
@@ -119,7 +116,7 @@ def Menu(chat):
     users_option_novella[user_id] = None
     keyboard.keyboard.clear()
     keyboard.add(btn_Mystical_Hotel, btn_Invasion)
-    Kvestbot.send_message(chat.from_user.id, Start_Menu, reply_markup=keyboard)
+    Kvestbot.send_message(chat.from_user.id, chat.from_user.id, reply_markup=keyboard)
 
 @Kvestbot.message_handler(commands = ["stop"])
 def stop(chat):
@@ -133,11 +130,13 @@ def stop(chat):
 
 @Kvestbot.callback_query_handler(func=lambda call: call.data == "cocal")
 def Cocal(chat):
+    user_id = chat.from_user.id
     Kvestbot.edit_message_reply_markup( # Удаляем кнопки у всех предыдущих сообщений
         chat_id=chat.message.chat.id,
         message_id=chat.message.message_id,
         reply_markup=None
     )
+    users_check[user_id] = True
     Kvestbot.send_message(chat.from_user.id, "АХАХАХАХАХААХ, ебать ты лошара, каким же надо быть "
                                                          "долбаебом, чтобы кликнуть на такую хуйню?))")
 
