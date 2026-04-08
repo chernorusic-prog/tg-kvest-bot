@@ -5,7 +5,7 @@ import Invasion
 import Liberator
 import Mystical_Hotel
 
-Kvestbot = telebot.TeleBot('8752020452:AAFefZcxitQDYn9fqaOq0_86h4uKZd4o-QA')
+Kvestbot = telebot.TeleBot('8355491412:AAEOfsPuvGZxZpSTFP6Gy1AhUBJJvn_gK1Q')
 
 Start_Menu = '''Добро пожаловать в сборник моих новелл.
 
@@ -25,13 +25,19 @@ End_Novella = '''🏁 История подошла к концу.
 
 Check1 = "Ты ступаешь на запретную территорию. Уверен, что твоя мать шлюха не сдохнет от спида после такого?"
 
-Check2 = ('''Ну как скажешь, петушара ебаный, ты сам нахуй напросился.
+Check2 = '''Ну как скажешь, петушара ебаный, ты сам нахуй напросился.
 
 Добро пожаловать в сборник моих самых ебанутых новелл.
 
 📌 Здесь ты будешь проходить самые ахуенные интерактивные истории, отсасывая хуй и принимая в жопу на каждом шаге.
 
-С какой хуйни желаешь начать?)''')
+С какой хуйни желаешь начать?)'''
+
+End_Check = '''🏁 Ебанутая хуйня подошла к концу.
+
+Но этот пиздец ещё не кончился — другие ебанутые новеллы готовы порвать тебе анал в любой момент.
+
+Какую хуйню желаешь проходить теперь?)'''
 
 btn1 = types.InlineKeyboardButton('1', callback_data = '1')
 btn2 = types.InlineKeyboardButton('2', callback_data = '2')
@@ -172,8 +178,8 @@ def Cocal(chat):
             keyboard.add(btn_Mystical_Hotel, btn_Invasion)
             Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
         else:
-            keyboard.add(btn_Mystical_Hotel, btn_Invasion)
-            Kvestbot.send_message(chat.from_user.id, End_Novella, reply_markup=keyboard)
+            keyboard.add(btn_Liberator)
+            Kvestbot.send_message(chat.from_user.id, End_Check, reply_markup=keyboard)
     print(users_step[user_id]) # Заменить на отправку сообщений мне
 
 Kvestbot.polling(none_stop = True)
