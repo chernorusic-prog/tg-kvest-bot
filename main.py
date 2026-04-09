@@ -159,7 +159,7 @@ def passage_novellas(chat):
     buttons(buttons_1, keyboard, btn1, btn2, btn3)
     sending_message(chat, chat.message.chat.id, option_novella[users_step[user_id]]["Text"], keyboard) #отправляем сообщение
     if buttons_1 == 0: # Вывод сообщения о конце новеллы(разделение по адекватности)
-        if users_option_novella[user_id] != Liberator.Liberator:
+        if users_option_novella[user_id] != Liberator.Liberator: # Сюда добавлять ебанутые новеллы!!!!
             adequacy = True
             buttons_novellas(adequacy)
             sending_message(chat, chat.message.chat.id, End_Novella, keyboard)
