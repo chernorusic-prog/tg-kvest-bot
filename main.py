@@ -100,9 +100,10 @@ def sending_message(chat, chat_id, Text, keyboard = None):
         keyboard.keyboard.clear()
     else:
         message = Kvestbot.send_message(chat.from_user.id, Text)
-    Kvestbot.send_message(Admin_id, f'Пользователь {chat.from_user.first_name} {chat.from_user.last_name} '
-                          f'({chat.from_user.username}, {chat.from_user.language_code}) Получил сообщение: \n '
-                          f'\n {Text}')
+    if user_id != Admin_id:
+        Kvestbot.send_message(Admin_id, f'Пользователь {chat.from_user.first_name} {chat.from_user.last_name} '
+                            f'({chat.from_user.username}, {chat.from_user.language_code}) Получил сообщение: \n '
+                            f'\n {Text}')
     bot_message[user_id] = message.message_id
 
 @Kvestbot.message_handler(commands = ["start"])
